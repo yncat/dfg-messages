@@ -1,0 +1,38 @@
+{
+  "name": "dfg-messages",
+  "version": "0.1.0",
+  "description": "Common message protocol for online daifugo game",
+  "main": "dist/index.js",
+  "scripts": {
+    "test-with-debugger": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand",
+    "fmt-lint": "prettier -c src/**/*.ts",
+    "fmt": "prettier -w src/**/*.ts",
+    "lint": "eslint . --ext ts",
+    "pre-commit": "npm run test && npm run lint && npm run fmt-lint",
+    "build": "tsc --project tsconfig.production.json",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yncat/dfg-messages.git"
+  },
+  "author": "Yukio Nozawa",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "bugs": {
+    "url": "https://github.com/yncat/dfg-messages/issues"
+  },
+  "dependencies": {
+    "@mojotech/json-type-validation": "^3.1.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "eslint": "^7.25.0",
+    "prettier": "^2.2.1"
+  }
+}
