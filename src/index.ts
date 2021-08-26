@@ -75,6 +75,7 @@ Request がサーバーからクライアントに送られたり、 Message が
 - JBackMessage: 11バックが発生したときに全員に送信する。強さの変化は、別のメッセージで通知される。
 - KakumeiMessage: 革命が発生したときに全員に送信する。強さの変化は、別のメッセージで通知される。
 - GameEndMessage: ゲームが終了したときに全員に送信する。順位は、別のメッセージで通知される。
+- RoomCreatedRequest: ルームを作成したクライアントが、ロビーに対して送信する。これを受け取ったら、サーバーは、ロビーの全員に RoomCreatedMessage を返すので、ルームができたことをクライアント全員が把握できるという仕組みになっている。
 /*
 
 /*
@@ -589,7 +590,7 @@ export function encodeGameEndMessage(
 
 /*
 RoomCreatedMessage: 新しいルーム作成メッセージ
-新しいルームができたことをサーバーから通知してくれる便利メッセージ。
+新しいルームができたことをサーバーから通知してくれる便利メッセージ。ただ、サーバー側がルームを監視しているわけではなく、クライアントから RoomCreatedRequest が来たら、返しで送信しているだけである。
 (parameter) playerName: ルームを作成したプレイヤーの名前
 */
 export interface RoomCreatedMessage {
