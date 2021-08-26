@@ -587,6 +587,27 @@ export function encodeGameEndMessage(
   };
 }
 
+/*
+RoomCreatedMessage: 新しいルーム作成メッセージ
+新しいルームができたことをサーバーから通知してくれる便利メッセージ。
+(parameter) playerName: ルームを作成したプレイヤーの名前
+*/
+export interface RoomCreatedMessage {
+  playerName: string;
+}
+
+export const RoomCreatedMessageDecoder: Decoder<RoomCreatedMessage> = object({
+  playerName: string(),
+});
+
+export function encodeRoomCreatedMessage(
+  playerName: string
+): RoomCreatedMessage {
+  return {
+    playerName,
+  };
+}
+
 export class PayloadDecodeError extends Error {}
 export function decodePayload<T>(
   encoded: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
