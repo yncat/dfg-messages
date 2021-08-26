@@ -139,6 +139,11 @@ export interface GameEndMessage {
 }
 export declare const GameEndMessageDecoder: Decoder<GameEndMessage>;
 export declare function encodeGameEndMessage(daifugoNameList: string[], fugoNameList: string[], heiminNameList: string[], hinminNameList: string[], daihinminNameList: string[]): GameEndMessage;
+export interface RoomCreatedMessage {
+    playerName: string;
+}
+export declare const RoomCreatedMessageDecoder: Decoder<RoomCreatedMessage>;
+export declare function encodeRoomCreatedMessage(playerName: string): RoomCreatedMessage;
 export declare class PayloadDecodeError extends Error {
 }
 export declare function decodePayload<T>(encoded: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
