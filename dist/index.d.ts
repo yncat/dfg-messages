@@ -144,6 +144,17 @@ export interface RoomCreatedMessage {
 }
 export declare const RoomCreatedMessageDecoder: Decoder<RoomCreatedMessage>;
 export declare function encodeRoomCreatedMessage(playerName: string): RoomCreatedMessage;
+export declare const RoomState: {
+    readonly WAITING: 0;
+    readonly PLAYING: 1;
+};
+export declare type RoomState = typeof RoomState[keyof typeof RoomState];
+export declare const RoomStateDecoder: Decoder<0 | 1>;
+export interface GameRoomMetadata {
+    roomState: RoomState;
+}
+export declare const GameRoomMetadataDecoder: Decoder<GameRoomMetadata>;
+export declare function encodeGameRoomMetadata(roomState: RoomState): GameRoomMetadata;
 export declare class PayloadDecodeError extends Error {
 }
 export declare function decodePayload<T>(encoded: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any

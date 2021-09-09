@@ -64,6 +64,8 @@ dfg request / message definitions
 **Message は、サーバーからクライアントに送信するもの。
 Request がサーバーからクライアントに送られたり、 Message がクライアントからサーバーに送られることはない。
 
+** Metadata は、 room.setMetadata でセットしているメタデータに型を付けたもの。
+
 # non-parameter messages
 以下のメッセージは、パラメータを持たないので、コードとしては定義していない。
 - GameMasterMessage: ゲームマスターの権限をクライアントに与えるとき、そのクライアントに対して送信する。クライアントは、このメッセージを受信したら、ゲーム開始ボタンを表示する。
@@ -606,6 +608,37 @@ export function encodeRoomCreatedMessage(
 ): RoomCreatedMessage {
   return {
     playerName,
+  };
+}
+
+/*
+ルームの現在の状態を表す。
+*/
+export const RoomState = {
+  WAITING: 0,
+  PLAYING: 1,
+} as const;
+export type RoomState = typeof RoomState[keyof typeof RoomState];
+export const RoomStateDecoder = oneOf(
+  constant(RoomState.WAITING),
+  constant(RoomState.PLAYING)
+);
+
+/*
+GameRoomMetadata: ゲームルームの状態を表すメタデータ。
+(parameter) RoomState: ルームの状態。
+*/
+export interface GameRoomMetadata {
+  roomState: RoomState;
+}
+
+export const GameRoomMetadataDecoder: Decoder<GameRoomMetadata> = object({
+  roomState: RoomStateDecoder,
+});
+
+export function encodeGameRoomMetadata(roomState: RoomState): GameRoomMetadata {
+  return {
+    roomState,
   };
 }
 
