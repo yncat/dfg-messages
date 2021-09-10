@@ -267,10 +267,12 @@ exports.RoomState = {
 };
 exports.RoomStateDecoder = json_type_validation_1.oneOf(json_type_validation_1.constant(exports.RoomState.WAITING), json_type_validation_1.constant(exports.RoomState.PLAYING));
 exports.GameRoomMetadataDecoder = json_type_validation_1.object({
+    owner: json_type_validation_1.string(),
     roomState: exports.RoomStateDecoder,
 });
-function encodeGameRoomMetadata(roomState) {
+function encodeGameRoomMetadata(owner, roomState) {
     return {
+        owner,
         roomState,
     };
 }

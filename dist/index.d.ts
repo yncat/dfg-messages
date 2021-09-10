@@ -151,10 +151,11 @@ export declare const RoomState: {
 export declare type RoomState = typeof RoomState[keyof typeof RoomState];
 export declare const RoomStateDecoder: Decoder<0 | 1>;
 export interface GameRoomMetadata {
+    owner: string;
     roomState: RoomState;
 }
 export declare const GameRoomMetadataDecoder: Decoder<GameRoomMetadata>;
-export declare function encodeGameRoomMetadata(roomState: RoomState): GameRoomMetadata;
+export declare function encodeGameRoomMetadata(owner: string, roomState: RoomState): GameRoomMetadata;
 export declare class PayloadDecodeError extends Error {
 }
 export declare function decodePayload<T>(encoded: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
