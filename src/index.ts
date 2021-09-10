@@ -630,16 +630,19 @@ GameRoomMetadata: ゲームルームの状態を表すメタデータ。
 (parameter) RoomState: ルームの状態。
 */
 export interface GameRoomMetadata {
-  owner:string;
+  owner: string;
   roomState: RoomState;
 }
 
 export const GameRoomMetadataDecoder: Decoder<GameRoomMetadata> = object({
-  owner:string(),
+  owner: string(),
   roomState: RoomStateDecoder,
 });
 
-export function encodeGameRoomMetadata(owner:string, roomState: RoomState): GameRoomMetadata {
+export function encodeGameRoomMetadata(
+  owner: string,
+  roomState: RoomState
+): GameRoomMetadata {
   return {
     owner,
     roomState,
