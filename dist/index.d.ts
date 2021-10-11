@@ -35,6 +35,11 @@ export interface PlayerJoinedMessage {
 }
 export declare const PlayerJoinedMessageDecoder: Decoder<PlayerJoinedMessage>;
 export declare function encodePlayerJoinedMessage(playerName: string): PlayerJoinedMessage;
+export interface PlayerLeftMessage {
+    playerName: string;
+}
+export declare const PlayerLeftMessageDecoder: Decoder<PlayerLeftMessage>;
+export declare function encodePlayerLeftMessage(playerName: string): PlayerLeftMessage;
 export interface SelectableCardMessage {
     mark: CardMark;
     cardNumber: number;

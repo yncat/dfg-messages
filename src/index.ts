@@ -147,6 +147,27 @@ export function encodePlayerJoinedMessage(
 }
 
 /*
+PlayerLeftMessage: プレイヤー退室通知
+プレイヤーがルームから退室したときにサーバーから送られてくるメッセージ。すでにゲーム中のルームから誰かが退室したときも送られてくる。
+(parameter) playerName: 退室したプレイヤーの名前。
+*/
+export interface PlayerLeftMessage {
+  playerName: string;
+}
+
+export const PlayerLeftMessageDecoder: Decoder<PlayerLeftMessage> = object({
+  playerName: string(),
+});
+
+export function encodePlayerLeftMessage(
+  playerName: string
+): PlayerLeftMessage {
+  return {
+    playerName,
+  };
+}
+
+/*
 SelectableCardMessage: カード情報+カード選択情報
 カードのスーとと番号 + 選択状態、選択可否の情報。出すカードを選ぶチェックボックスを描画するときに使う。メッセージ1つでカード1枚を表す。
 (parameter) mark: カードのマークを表す定数
