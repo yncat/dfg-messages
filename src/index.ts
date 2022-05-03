@@ -159,9 +159,7 @@ export const PlayerLeftMessageDecoder: Decoder<PlayerLeftMessage> = object({
   playerName: string(),
 });
 
-export function encodePlayerLeftMessage(
-  playerName: string
-): PlayerLeftMessage {
+export function encodePlayerLeftMessage(playerName: string): PlayerLeftMessage {
   return {
     playerName,
   };
@@ -246,8 +244,8 @@ export function encodeTurnMessage(playerName: string): TurnMessage {
 
 /*
 CardSelectRequest: カード選択リクエスト
-アクティブプレイヤーが特定のカードをカードリストから選択するときに、クライアントが送信するリクエスト。
-(parameter) index: 選択するカードの 0-start インデックス番号
+アクティブプレイヤーが特定のカードをカードリストから選択/選択解除するときに、クライアントが送信するリクエスト。
+(parameter) index: 選択/選択解除するカードの 0-start インデックス番号
 */
 export interface CardSelectRequest {
   index: number;
@@ -449,18 +447,25 @@ export function encodeDiscardMessage(
 PassMessage: パスメッセージ
 プレイヤーがパスしたときのメッセージ。
 (parameter) playerName: パスしたプレイヤーの名前。
+(parameter) remainingHandCount: 残りの手札枚数。
 */
 export interface PassMessage {
   playerName: string;
+  remainingHandCount: number;
 }
 
 export const PassMessageDecoder: Decoder<PassMessage> = object({
   playerName: string(),
+  remainingHandCount: number(),
 });
 
-export function encodePassMessage(playerName: string): PassMessage {
+export function encodePassMessage(
+  playerName: string,
+  remainingHandCount: number
+): PassMessage {
   return {
     playerName,
+    remainingHandCount,
   };
 }
 
