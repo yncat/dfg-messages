@@ -108,9 +108,10 @@ export declare const DiscardMessageDecoder: Decoder<DiscardMessage>;
 export declare function encodeDiscardMessage(playerName: string, discardPair: DiscardPairMessage, remainingHandCount: number): DiscardMessage;
 export interface PassMessage {
     playerName: string;
+    remainingHandCount: number;
 }
 export declare const PassMessageDecoder: Decoder<PassMessage>;
-export declare function encodePassMessage(playerName: string): PassMessage;
+export declare function encodePassMessage(playerName: string, remainingHandCount: number): PassMessage;
 export interface PlayerKickedMessage {
     playerName: string;
 }

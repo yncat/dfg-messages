@@ -190,10 +190,12 @@ function encodeDiscardMessage(playerName, discardPair, remainingHandCount) {
 exports.encodeDiscardMessage = encodeDiscardMessage;
 exports.PassMessageDecoder = json_type_validation_1.object({
     playerName: json_type_validation_1.string(),
+    remainingHandCount: json_type_validation_1.number(),
 });
-function encodePassMessage(playerName) {
+function encodePassMessage(playerName, remainingHandCount) {
     return {
         playerName,
+        remainingHandCount,
     };
 }
 exports.encodePassMessage = encodePassMessage;
