@@ -69,13 +69,15 @@ function encodePlayerLeftMessage(playerName) {
 }
 exports.encodePlayerLeftMessage = encodePlayerLeftMessage;
 exports.SelectableCardMessageDecoder = json_type_validation_1.object({
+    ID: json_type_validation_1.string(),
     mark: exports.CardMarkDecoder,
     cardNumber: json_type_validation_1.number(),
     isChecked: json_type_validation_1.boolean(),
     isCheckable: json_type_validation_1.boolean(),
 });
-function encodeSelectableCardMessage(mark, cardNumber, isChecked, isCheckable) {
+function encodeSelectableCardMessage(ID, mark, cardNumber, isChecked, isCheckable) {
     return {
+        ID,
         mark,
         cardNumber,
         isChecked,

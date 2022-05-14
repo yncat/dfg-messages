@@ -168,12 +168,14 @@ export function encodePlayerLeftMessage(playerName: string): PlayerLeftMessage {
 /*
 SelectableCardMessage: カード情報+カード選択情報
 カードのスーとと番号 + 選択状態、選択可否の情報。出すカードを選ぶチェックボックスを描画するときに使う。メッセージ1つでカード1枚を表す。
+(parameter) ID: カードの内部識別子
 (parameter) mark: カードのマークを表す定数
 (parameter) cardNumber: カードの番号
 (parameter) isChecked: 選択状態かどうか
 (parameter) isCheckable:チェックボックスを操作可能にするべきかどうか
 */
 export interface SelectableCardMessage {
+  ID: string;
   mark: CardMark;
   cardNumber: number;
   isChecked: boolean;
@@ -182,6 +184,7 @@ export interface SelectableCardMessage {
 
 export const SelectableCardMessageDecoder: Decoder<SelectableCardMessage> =
   object({
+    ID: string(),
     mark: CardMarkDecoder,
     cardNumber: number(),
     isChecked: boolean(),
@@ -189,12 +192,14 @@ export const SelectableCardMessageDecoder: Decoder<SelectableCardMessage> =
   });
 
 export function encodeSelectableCardMessage(
+  ID: string,
   mark: CardMark,
   cardNumber: number,
   isChecked: boolean,
   isCheckable: boolean
 ): SelectableCardMessage {
   return {
+    ID,
     mark,
     cardNumber,
     isChecked,

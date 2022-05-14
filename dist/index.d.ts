@@ -41,13 +41,14 @@ export interface PlayerLeftMessage {
 export declare const PlayerLeftMessageDecoder: Decoder<PlayerLeftMessage>;
 export declare function encodePlayerLeftMessage(playerName: string): PlayerLeftMessage;
 export interface SelectableCardMessage {
+    ID: string;
     mark: CardMark;
     cardNumber: number;
     isChecked: boolean;
     isCheckable: boolean;
 }
 export declare const SelectableCardMessageDecoder: Decoder<SelectableCardMessage>;
-export declare function encodeSelectableCardMessage(mark: CardMark, cardNumber: number, isChecked: boolean, isCheckable: boolean): SelectableCardMessage;
+export declare function encodeSelectableCardMessage(ID: string, mark: CardMark, cardNumber: number, isChecked: boolean, isCheckable: boolean): SelectableCardMessage;
 export interface CardListMessage {
     cardList: SelectableCardMessage[];
 }
