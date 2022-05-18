@@ -704,11 +704,20 @@ export function decodePayload<T>(
 }
 
 /* WebSocket カスタムエラーコード */
-export const WebSocketErrors = {
+export const WebSocketErrorCode = {
   // クライアント側とサーバー側のプロトコルバージョンが一致しない
   PROTOCOL_VERSION_MISMATCH: 4000,
   // プレイヤー名に使用できない文字が含まれている、または、使用できない名前のパターンに該当する。
   INVALID_PLAYER_NAME: 4001,
 } as const;
-export type WebSocketErrors =
-  typeof WebSocketErrors[keyof typeof WebSocketErrors];
+export type WebSocketErrorCode =
+  typeof WebSocketErrorCode[keyof typeof WebSocketErrorCode];
+
+/* WebSocketでエラーが発生したときにサーバーから投げる例外 */
+export class AuthError extends Error {
+  public code: WebSocketErrorCode;
+  constructor(message: string, code: WebSocketErrorCode) {
+    super(message);
+    this.code = code;
+  }
+}

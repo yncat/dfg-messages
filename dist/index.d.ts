@@ -167,8 +167,12 @@ export declare class PayloadDecodeError extends Error {
 }
 export declare function decodePayload<T>(encoded: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 decoder: Decoder<T>): T | PayloadDecodeError;
-export declare const WebSocketErrors: {
+export declare const WebSocketErrorCode: {
     readonly PROTOCOL_VERSION_MISMATCH: 4000;
     readonly INVALID_PLAYER_NAME: 4001;
 };
-export declare type WebSocketErrors = typeof WebSocketErrors[keyof typeof WebSocketErrors];
+export declare type WebSocketErrorCode = typeof WebSocketErrorCode[keyof typeof WebSocketErrorCode];
+export declare class AuthError extends Error {
+    code: WebSocketErrorCode;
+    constructor(message: string, code: WebSocketErrorCode);
+}
