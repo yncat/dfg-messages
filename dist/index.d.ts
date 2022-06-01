@@ -19,6 +19,19 @@ export declare const RankType: {
 };
 export declare type RankType = typeof RankType[keyof typeof RankType];
 export declare const RankTypeDecoder: Decoder<0 | 1 | 2 | 3 | 4 | 5>;
+export declare type RuleConfig = {
+    yagiri: boolean;
+    jBack: boolean;
+    kakumei: boolean;
+    reverse: boolean;
+    skip: SkipConfig;
+};
+export declare const SkipConfig: {
+    readonly OFF: 0;
+    readonly SINGLE: 1;
+    readonly MULTI: 2;
+};
+export declare type SkipConfig = typeof SkipConfig[keyof typeof SkipConfig];
 export interface ChatRequest {
     message: string;
 }

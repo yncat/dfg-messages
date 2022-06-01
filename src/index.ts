@@ -56,6 +56,23 @@ export const RankTypeDecoder = oneOf(
   constant(RankType.DAIFUGO)
 );
 
+/* ルール設定情報 */
+export type RuleConfig = {
+  yagiri: boolean;
+  jBack: boolean;
+  kakumei: boolean;
+  reverse: boolean;
+  skip: SkipConfig;
+};
+
+/* スキップ方法 */
+export const SkipConfig = {
+  OFF: 0, // 飛ばさない
+  SINGLE: 1, // 次のプレイヤーを飛ばす
+  MULTI: 2, // 出したカードの分だけ飛ばす
+} as const;
+export type SkipConfig = typeof SkipConfig[keyof typeof SkipConfig];
+
 /*
 dfg request / message definitions
 
