@@ -113,6 +113,11 @@ export interface StrengthInversionMessage {
 }
 export declare const StrengthInversionMessageDecoder: Decoder<StrengthInversionMessage>;
 export declare function encodeStrengthInversionMessage(isStrengthInverted: boolean): StrengthInversionMessage;
+export interface TurnSkippedMessage {
+    playerName: string;
+}
+export declare const TurnSkippedMessageDecoder: Decoder<TurnSkippedMessage>;
+export declare function encodeTurnSkippedMessage(playerName: string): TurnSkippedMessage;
 export interface DiscardMessage {
     playerName: string;
     discardPair: DiscardPairMessage;

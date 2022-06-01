@@ -92,6 +92,7 @@ Request がサーバーからクライアントに送られたり、 Message が
 - NagareMessage: 場のカードが流れたときに全員に送信する。
 - YagiriMessage: 8切りが発生したときに全員に送信する。
 - JBackMessage: 11バックが発生したときに全員に送信する。強さの変化は、別のメッセージで通知される。
+- ReverseMessage: 9リバースが発生したときに全員に送信する。
 - KakumeiMessage: 革命が発生したときに全員に送信する。強さの変化は、別のメッセージで通知される。
 - GameEndMessage: ゲームが終了したときに全員に送信する。順位は、別のメッセージで通知される。
 - RoomCreatedRequest: ルームを作成したクライアントが、ロビーに対して送信する。これを受け取ったら、サーバーは、ロビーの全員に RoomCreatedMessage を返すので、ルームができたことをクライアント全員が把握できるという仕組みになっている。ルームを作成したプレイヤー名は、 session id から引っ張ってくるので、明示的に渡す必要はない。
@@ -431,6 +432,27 @@ export function encodeStrengthInversionMessage(
 ): StrengthInversionMessage {
   return {
     isStrengthInverted,
+  };
+}
+
+/*
+TurnSkippedMessage: ターンスキップメッセージ
+ターンがスキップされたときのメッセージ。
+(parameter) playerName: ターンをスキップされたプレイヤーの名前
+*/
+export interface TurnSkippedMessage {
+  playerName: string;
+}
+
+export const TurnSkippedMessageDecoder: Decoder<TurnSkippedMessage> = object({
+  playerName: string(),
+});
+
+export function encodeTurnSkippedMessage(
+  playerName: string
+): TurnSkippedMessage {
+  return {
+    playerName,
   };
 }
 
