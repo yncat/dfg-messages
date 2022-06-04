@@ -32,6 +32,7 @@ export declare const SkipConfig: {
     readonly MULTI: 2;
 };
 export declare type SkipConfig = typeof SkipConfig[keyof typeof SkipConfig];
+export declare function isValidRuleConfig(obj: unknown): obj is RuleConfig;
 export interface ChatRequest {
     message: string;
 }

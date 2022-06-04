@@ -73,6 +73,35 @@ export const SkipConfig = {
 } as const;
 export type SkipConfig = typeof SkipConfig[keyof typeof SkipConfig];
 
+export function isValidRuleConfig(obj: unknown): obj is RuleConfig {
+  const castedObj = obj as RuleConfig;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  if (typeof castedObj.yagiri !== "boolean") {
+    return false;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  if (typeof castedObj.jBack !== "boolean") {
+    return false;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  if (typeof castedObj.kakumei !== "boolean") {
+    return false;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  if (typeof castedObj.reverse !== "boolean") {
+    return false;
+  }
+  if (
+    ![SkipConfig.OFF, SkipConfig.SINGLE, SkipConfig.MULTI].includes(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      castedObj.skip
+    )
+  ) {
+    return false;
+  }
+  return true;
+}
+
 /*
 dfg request / message definitions
 
@@ -728,15 +757,8 @@ export function decodePayload<T>(
   if (ret.ok === false) {
     const e = ret.error;
     return new PayloadDecodeError(
-      "Cannot decode Payload." +
-        "input: " +
-        e.input +
-        "\n" +
-        "at: " +
-        e.at +
-        "\n" +
-        "message: " +
-        e.message
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      `Cannot decode Payload. input: ${e.input}\nat: ${e.at}\nmessage: ${e.message}`
     );
   }
   return ret.result;
