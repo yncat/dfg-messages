@@ -37,6 +37,9 @@ exports.SkipConfig = {
     MULTI: 2, // 出したカードの分だけ飛ばす
 };
 function isValidRuleConfig(obj) {
+    if (typeof obj !== "object") {
+        return false;
+    }
     const castedObj = obj;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (typeof castedObj.yagiri !== "boolean") {
