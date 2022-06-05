@@ -106,16 +106,31 @@ export function isValidRuleConfig(obj: unknown): obj is RuleConfig {
 }
 
 export type GameRoomCreationOptions = {
-  playerName:string;
   ruleConfig: RuleConfig;
 };
 
-export function isValidGameRoomCreationOptions(obj: unknown): obj is GameRoomCreationOptions {
+export function isValidGameRoomCreationOptions(
+  obj: unknown
+): obj is GameRoomCreationOptions {
   if (typeof obj !== "object") {
     return false;
   }
   const castedObj = obj as GameRoomCreationOptions;
   return isValidRuleConfig(castedObj.ruleConfig);
+}
+
+export type GameRoomParticipationOptions = {
+  playerName: string;
+};
+
+export function isValidGameRoomParticipationOptions(
+  obj: unknown
+): obj is GameRoomParticipationOptions {
+  if (typeof obj !== "object") {
+    return false;
+  }
+  const castedObj = obj as GameRoomParticipationOptions;
+  return typeof castedObj.playerName === "string";
 }
 
 /*

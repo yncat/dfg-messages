@@ -34,10 +34,13 @@ export declare const SkipConfig: {
 export declare type SkipConfig = typeof SkipConfig[keyof typeof SkipConfig];
 export declare function isValidRuleConfig(obj: unknown): obj is RuleConfig;
 export declare type GameRoomCreationOptions = {
-    playerName: string;
     ruleConfig: RuleConfig;
 };
 export declare function isValidGameRoomCreationOptions(obj: unknown): obj is GameRoomCreationOptions;
+export declare type GameRoomParticipationOptions = {
+    playerName: string;
+};
+export declare function isValidGameRoomParticipationOptions(obj: unknown): obj is GameRoomParticipationOptions;
 export interface ChatRequest {
     message: string;
 }
