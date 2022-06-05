@@ -105,15 +105,16 @@ export function isValidRuleConfig(obj: unknown): obj is RuleConfig {
   return true;
 }
 
-export type GameRoomOptions = {
+export type GameRoomCreationOptions = {
+  playerName:string;
   ruleConfig: RuleConfig;
 };
 
-export function isValidGameRoomOptions(obj: unknown): obj is GameRoomOptions {
+export function isValidGameRoomCreationOptions(obj: unknown): obj is GameRoomCreationOptions {
   if (typeof obj !== "object") {
     return false;
   }
-  const castedObj = obj as GameRoomOptions;
+  const castedObj = obj as GameRoomCreationOptions;
   return isValidRuleConfig(castedObj.ruleConfig);
 }
 
