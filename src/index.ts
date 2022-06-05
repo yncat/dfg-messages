@@ -107,6 +107,9 @@ export type GameRoomOptions = {
 };
 
 export function isValidGameRoomOptions(obj: unknown): obj is GameRoomOptions {
+  if (typeof obj !== "object") {
+    return false;
+  }
   const castedObj = obj as GameRoomOptions;
   return isValidRuleConfig(castedObj.ruleConfig);
 }

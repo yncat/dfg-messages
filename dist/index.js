@@ -63,6 +63,9 @@ function isValidRuleConfig(obj) {
 }
 exports.isValidRuleConfig = isValidRuleConfig;
 function isValidGameRoomOptions(obj) {
+    if (typeof obj !== "object") {
+        return false;
+    }
     const castedObj = obj;
     return isValidRuleConfig(castedObj.ruleConfig);
 }
