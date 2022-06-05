@@ -102,6 +102,15 @@ export function isValidRuleConfig(obj: unknown): obj is RuleConfig {
   return true;
 }
 
+export type GameRoomOptions = {
+  ruleConfig: RuleConfig;
+};
+
+export function isValidGameRoomOptions(obj: unknown): obj is GameRoomOptions {
+  const castedObj = obj as GameRoomOptions;
+  return isValidRuleConfig(castedObj.ruleConfig);
+}
+
 /*
 dfg request / message definitions
 

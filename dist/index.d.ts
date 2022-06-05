@@ -33,6 +33,10 @@ export declare const SkipConfig: {
 };
 export declare type SkipConfig = typeof SkipConfig[keyof typeof SkipConfig];
 export declare function isValidRuleConfig(obj: unknown): obj is RuleConfig;
+export declare type GameRoomOptions = {
+    ruleConfig: RuleConfig;
+};
+export declare function isValidGameRoomOptions(obj: unknown): obj is GameRoomOptions;
 export interface ChatRequest {
     message: string;
 }
