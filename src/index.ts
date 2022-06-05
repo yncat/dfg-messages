@@ -56,7 +56,28 @@ export const RankTypeDecoder = oneOf(
   constant(RankType.DAIFUGO)
 );
 
-/* ルール設定情報 */
+/* スキップ方法 */
+export const SkipConfig = {
+  OFF: 0, // 飛ばさない
+  SINGLE: 1, // 次のプレイヤーを飛ばす
+  MULTI: 2, // 出したカードの分だけ飛ばす
+} as const;
+export type SkipConfig = typeof SkipConfig[keyof typeof SkipConfig];
+
+export const SkipConfigDecoder = oneOf(
+  constant(SkipConfig.OFF),
+  constant(SkipConfig.SINGLE),
+  constant(SkipConfig.MULTI)
+);
+
+/*
+ルール設定情報
+(parameter) yagiri: 8切りが有効かどうか
+(parameter) jBack: 11バックが有効かどうか
+(parameter) kakumei: 革命/革命返しが有効かどうか
+(parameter) reverse: 9リバースが有効かどうか
+(parameter) skip: 5スキップの取り扱いをどうするか
+*/
 export type RuleConfig = {
   yagiri: boolean;
   jBack: boolean;
@@ -65,13 +86,13 @@ export type RuleConfig = {
   skip: SkipConfig;
 };
 
-/* スキップ方法 */
-export const SkipConfig = {
-  OFF: 0, // 飛ばさない
-  SINGLE: 1, // 次のプレイヤーを飛ばす
-  MULTI: 2, // 出したカードの分だけ飛ばす
-} as const;
-export type SkipConfig = typeof SkipConfig[keyof typeof SkipConfig];
+export const RuleConfigDecoder: Decoder<RuleConfig> = object({
+  yagiri: boolean(),
+  jBack: boolean(),
+  kakumei: boolean(),
+  reverse: boolean(),
+  skip: SkipConfigDecoder,
+});
 
 export function isValidRuleConfig(obj: unknown): obj is RuleConfig {
   if (typeof obj !== "object") {
@@ -758,24 +779,30 @@ export const RoomStateDecoder = oneOf(
 GameRoomMetadata: ゲームルームの状態を表すメタデータ。
 (parameter) owner: ルームオーナー。
 (parameter) RoomState: ルームの状態。
+(parameter) ruleConfig: ルール設定。
+
 */
 export interface GameRoomMetadata {
   owner: string;
   roomState: RoomState;
+  ruleConfig: RuleConfig;
 }
 
 export const GameRoomMetadataDecoder: Decoder<GameRoomMetadata> = object({
   owner: string(),
   roomState: RoomStateDecoder,
+  ruleConfig: RuleConfigDecoder,
 });
 
 export function encodeGameRoomMetadata(
   owner: string,
-  roomState: RoomState
+  roomState: RoomState,
+  ruleConfig: RuleConfig
 ): GameRoomMetadata {
   return {
     owner,
     roomState,
+    ruleConfig,
   };
 }
 

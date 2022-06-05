@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.encodeInitialInfoMessage = exports.InitialInfoMessageDecoder = exports.encodePlayerRankChangedMessage = exports.PlayerRankChangedMessageDecoder = exports.encodePlayerKickedMessage = exports.PlayerKickedMessageDecoder = exports.encodePassMessage = exports.PassMessageDecoder = exports.encodeDiscardMessage = exports.DiscardMessageDecoder = exports.encodeTurnSkippedMessage = exports.TurnSkippedMessageDecoder = exports.encodeStrengthInversionMessage = exports.StrengthInversionMessageDecoder = exports.encodeForbiddenAgariMessage = exports.ForbiddenAgariMessageDecoder = exports.encodeAgariMessage = exports.AgariMessageDecoder = exports.encodeDiscardPairListMessage = exports.DiscardPairListMessageDecoder = exports.encodeDiscardPairMessage = exports.DiscardPairMessageDecoder = exports.encodeCardMessage = exports.CardMessageDecoder = exports.encodeDiscardRequest = exports.DiscardRequestDecoder = exports.encodeCardSelectRequest = exports.CardSelectRequestDecoder = exports.encodeTurnMessage = exports.TurnMessageDecoder = exports.encodeCardListMessage = exports.CardListMessageDecoder = exports.encodeSelectableCardMessage = exports.SelectableCardMessageDecoder = exports.encodePlayerLeftMessage = exports.PlayerLeftMessageDecoder = exports.encodePlayerJoinedMessage = exports.PlayerJoinedMessageDecoder = exports.encodeChatMessage = exports.ChatMessageDecoder = exports.encodeChatRequest = exports.ChatRequestDecoder = exports.isValidGameRoomParticipationOptions = exports.isValidGameRoomCreationOptions = exports.isValidRuleConfig = exports.SkipConfig = exports.RankTypeDecoder = exports.RankType = exports.CardMarkDecoder = exports.CardMark = void 0;
-exports.AuthError = exports.WebSocketErrorCode = exports.decodePayload = exports.PayloadDecodeError = exports.encodeGameRoomMetadata = exports.GameRoomMetadataDecoder = exports.RoomStateDecoder = exports.RoomState = exports.encodeRoomCreatedMessage = exports.RoomCreatedMessageDecoder = exports.encodeGameEndMessage = exports.GameEndMessageDecoder = exports.encodeCardsProvidedMessage = exports.CardsProvidedMessageDecoder = void 0;
+exports.encodePlayerRankChangedMessage = exports.PlayerRankChangedMessageDecoder = exports.encodePlayerKickedMessage = exports.PlayerKickedMessageDecoder = exports.encodePassMessage = exports.PassMessageDecoder = exports.encodeDiscardMessage = exports.DiscardMessageDecoder = exports.encodeTurnSkippedMessage = exports.TurnSkippedMessageDecoder = exports.encodeStrengthInversionMessage = exports.StrengthInversionMessageDecoder = exports.encodeForbiddenAgariMessage = exports.ForbiddenAgariMessageDecoder = exports.encodeAgariMessage = exports.AgariMessageDecoder = exports.encodeDiscardPairListMessage = exports.DiscardPairListMessageDecoder = exports.encodeDiscardPairMessage = exports.DiscardPairMessageDecoder = exports.encodeCardMessage = exports.CardMessageDecoder = exports.encodeDiscardRequest = exports.DiscardRequestDecoder = exports.encodeCardSelectRequest = exports.CardSelectRequestDecoder = exports.encodeTurnMessage = exports.TurnMessageDecoder = exports.encodeCardListMessage = exports.CardListMessageDecoder = exports.encodeSelectableCardMessage = exports.SelectableCardMessageDecoder = exports.encodePlayerLeftMessage = exports.PlayerLeftMessageDecoder = exports.encodePlayerJoinedMessage = exports.PlayerJoinedMessageDecoder = exports.encodeChatMessage = exports.ChatMessageDecoder = exports.encodeChatRequest = exports.ChatRequestDecoder = exports.isValidGameRoomParticipationOptions = exports.isValidGameRoomCreationOptions = exports.isValidRuleConfig = exports.RuleConfigDecoder = exports.SkipConfigDecoder = exports.SkipConfig = exports.RankTypeDecoder = exports.RankType = exports.CardMarkDecoder = exports.CardMark = void 0;
+exports.AuthError = exports.WebSocketErrorCode = exports.decodePayload = exports.PayloadDecodeError = exports.encodeGameRoomMetadata = exports.GameRoomMetadataDecoder = exports.RoomStateDecoder = exports.RoomState = exports.encodeRoomCreatedMessage = exports.RoomCreatedMessageDecoder = exports.encodeGameEndMessage = exports.GameEndMessageDecoder = exports.encodeCardsProvidedMessage = exports.CardsProvidedMessageDecoder = exports.encodeInitialInfoMessage = exports.InitialInfoMessageDecoder = void 0;
 const json_type_validation_1 = require("@mojotech/json-type-validation");
 /*
 dfg enum definitions
@@ -36,6 +36,14 @@ exports.SkipConfig = {
     SINGLE: 1,
     MULTI: 2, // 出したカードの分だけ飛ばす
 };
+exports.SkipConfigDecoder = json_type_validation_1.oneOf(json_type_validation_1.constant(exports.SkipConfig.OFF), json_type_validation_1.constant(exports.SkipConfig.SINGLE), json_type_validation_1.constant(exports.SkipConfig.MULTI));
+exports.RuleConfigDecoder = json_type_validation_1.object({
+    yagiri: json_type_validation_1.boolean(),
+    jBack: json_type_validation_1.boolean(),
+    kakumei: json_type_validation_1.boolean(),
+    reverse: json_type_validation_1.boolean(),
+    skip: exports.SkipConfigDecoder,
+});
 function isValidRuleConfig(obj) {
     if (typeof obj !== "object") {
         return false;
@@ -342,11 +350,13 @@ exports.RoomStateDecoder = json_type_validation_1.oneOf(json_type_validation_1.c
 exports.GameRoomMetadataDecoder = json_type_validation_1.object({
     owner: json_type_validation_1.string(),
     roomState: exports.RoomStateDecoder,
+    ruleConfig: exports.RuleConfigDecoder,
 });
-function encodeGameRoomMetadata(owner, roomState) {
+function encodeGameRoomMetadata(owner, roomState, ruleConfig) {
     return {
         owner,
         roomState,
+        ruleConfig,
     };
 }
 exports.encodeGameRoomMetadata = encodeGameRoomMetadata;

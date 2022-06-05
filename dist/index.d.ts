@@ -19,6 +19,13 @@ export declare const RankType: {
 };
 export declare type RankType = typeof RankType[keyof typeof RankType];
 export declare const RankTypeDecoder: Decoder<0 | 1 | 2 | 3 | 4 | 5>;
+export declare const SkipConfig: {
+    readonly OFF: 0;
+    readonly SINGLE: 1;
+    readonly MULTI: 2;
+};
+export declare type SkipConfig = typeof SkipConfig[keyof typeof SkipConfig];
+export declare const SkipConfigDecoder: Decoder<0 | 1 | 2>;
 export declare type RuleConfig = {
     yagiri: boolean;
     jBack: boolean;
@@ -26,12 +33,7 @@ export declare type RuleConfig = {
     reverse: boolean;
     skip: SkipConfig;
 };
-export declare const SkipConfig: {
-    readonly OFF: 0;
-    readonly SINGLE: 1;
-    readonly MULTI: 2;
-};
-export declare type SkipConfig = typeof SkipConfig[keyof typeof SkipConfig];
+export declare const RuleConfigDecoder: Decoder<RuleConfig>;
 export declare function isValidRuleConfig(obj: unknown): obj is RuleConfig;
 export declare type GameRoomCreationOptions = {
     ruleConfig: RuleConfig;
@@ -187,9 +189,10 @@ export declare const RoomStateDecoder: Decoder<0 | 1>;
 export interface GameRoomMetadata {
     owner: string;
     roomState: RoomState;
+    ruleConfig: RuleConfig;
 }
 export declare const GameRoomMetadataDecoder: Decoder<GameRoomMetadata>;
-export declare function encodeGameRoomMetadata(owner: string, roomState: RoomState): GameRoomMetadata;
+export declare function encodeGameRoomMetadata(owner: string, roomState: RoomState, ruleConfig: RuleConfig): GameRoomMetadata;
 export declare class PayloadDecodeError extends Error {
 }
 export declare function decodePayload<T>(encoded: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
