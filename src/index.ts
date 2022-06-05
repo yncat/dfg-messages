@@ -785,6 +785,8 @@ export const WebSocketErrorCode = {
   PROTOCOL_VERSION_MISMATCH: 4000,
   // プレイヤー名に使用できない文字が含まれている、または、使用できない名前のパターンに該当する。
   INVALID_PLAYER_NAME: 4001,
+  // 想定していないエラー(たぶんバグ)
+  UNEXPECTED: 4002,
 } as const;
 export type WebSocketErrorCode =
   typeof WebSocketErrorCode[keyof typeof WebSocketErrorCode];

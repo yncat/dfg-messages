@@ -193,6 +193,7 @@ decoder: Decoder<T>): T | PayloadDecodeError;
 export declare const WebSocketErrorCode: {
     readonly PROTOCOL_VERSION_MISMATCH: 4000;
     readonly INVALID_PLAYER_NAME: 4001;
+    readonly UNEXPECTED: 4002;
 };
 export declare type WebSocketErrorCode = typeof WebSocketErrorCode[keyof typeof WebSocketErrorCode];
 export declare class AuthError extends Error {
