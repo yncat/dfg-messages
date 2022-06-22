@@ -351,12 +351,14 @@ exports.GameRoomMetadataDecoder = json_type_validation_1.object({
     owner: json_type_validation_1.string(),
     roomState: exports.RoomStateDecoder,
     ruleConfig: exports.RuleConfigDecoder,
+    playerNameList: json_type_validation_1.array(json_type_validation_1.string()),
 });
-function encodeGameRoomMetadata(owner, roomState, ruleConfig) {
+function encodeGameRoomMetadata(owner, roomState, ruleConfig, playerNameList) {
     return {
         owner,
         roomState,
         ruleConfig,
+        playerNameList,
     };
 }
 exports.encodeGameRoomMetadata = encodeGameRoomMetadata;

@@ -190,9 +190,10 @@ export interface GameRoomMetadata {
     owner: string;
     roomState: RoomState;
     ruleConfig: RuleConfig;
+    playerNameList: string[];
 }
 export declare const GameRoomMetadataDecoder: Decoder<GameRoomMetadata>;
-export declare function encodeGameRoomMetadata(owner: string, roomState: RoomState, ruleConfig: RuleConfig): GameRoomMetadata;
+export declare function encodeGameRoomMetadata(owner: string, roomState: RoomState, ruleConfig: RuleConfig, playerNameList: string[]): GameRoomMetadata;
 export declare class PayloadDecodeError extends Error {
 }
 export declare function decodePayload<T>(encoded: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any

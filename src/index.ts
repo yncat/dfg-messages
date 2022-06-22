@@ -780,29 +780,34 @@ GameRoomMetadata: ゲームルームの状態を表すメタデータ。
 (parameter) owner: ルームオーナー。
 (parameter) RoomState: ルームの状態。
 (parameter) ruleConfig: ルール設定。
+(parameter) playerNameList: ルームに入っているプレイヤー名の一覧。
 
 */
 export interface GameRoomMetadata {
   owner: string;
   roomState: RoomState;
   ruleConfig: RuleConfig;
+  playerNameList: string[],
 }
 
 export const GameRoomMetadataDecoder: Decoder<GameRoomMetadata> = object({
   owner: string(),
   roomState: RoomStateDecoder,
   ruleConfig: RuleConfigDecoder,
+  playerNameList: array(string()),
 });
 
 export function encodeGameRoomMetadata(
   owner: string,
   roomState: RoomState,
-  ruleConfig: RuleConfig
+  ruleConfig: RuleConfig,
+  playerNameList:string[]
 ): GameRoomMetadata {
   return {
     owner,
     roomState,
     ruleConfig,
+    playerNameList,
   };
 }
 
