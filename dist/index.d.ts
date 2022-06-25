@@ -180,6 +180,28 @@ export interface RoomCreatedMessage {
 }
 export declare const RoomCreatedMessageDecoder: Decoder<RoomCreatedMessage>;
 export declare function encodeRoomCreatedMessage(playerName: string): RoomCreatedMessage;
+export interface PlayerLostMessage {
+    playerName: string;
+}
+export declare const PlayerLostMessageDecoder: Decoder<PlayerLostMessage>;
+export declare function encodePlayerLostMessage(playerName: string): PlayerLostMessage;
+export interface PlayerReconnectedMessage {
+    playerName: string;
+}
+export declare const PlayerReconnectedMessageDecoder: Decoder<PlayerReconnectedMessage>;
+export declare function encodePlayerReconnectedMessage(playerName: string): PlayerLostMessage;
+export declare const WaitReason: {
+    readonly RECONNECTION: 0;
+    readonly ACTION: 1;
+};
+export declare type WaitReason = typeof WaitReason[keyof typeof WaitReason];
+export declare const WaitReasonDecoder: Decoder<0 | 1>;
+export interface PlayerWaitMessage {
+    playerName: string;
+    reason: WaitReason;
+}
+export declare const PlayerWaitMessageDecoder: Decoder<PlayerWaitMessage>;
+export declare function encodePlayerWaitMessage(playerName: string, reason: WaitReason): PlayerWaitMessage;
 export declare const RoomState: {
     readonly WAITING: 0;
     readonly PLAYING: 1;

@@ -763,6 +763,86 @@ export function encodeRoomCreatedMessage(
 }
 
 /*
+PlayerLostMessage: プレイヤー接続落ちメッセージ
+プレイヤーの接続が落ちたことを通知するメッセージ。ゲームに参加中のプレイヤーが接続落ちした場合に送られる。一定時間以内にそのプレイヤーが戻ってくれば、playerReconnectedMessageで通知される。
+(parameter) playerName: 接続が落ちたプレイヤーの名前
+*/
+export interface PlayerLostMessage {
+  playerName: string;
+}
+
+export const PlayerLostMessageDecoder: Decoder<PlayerLostMessage> = object({
+  playerName: string(),
+});
+
+export function encodePlayerLostMessage(playerName: string): PlayerLostMessage {
+  return {
+    playerName,
+  };
+}
+
+/*
+PlayerReconnectedMessage: プレイヤー接続復帰メッセージ
+プレイヤーの接続が復帰したことを通知するメッセージ。
+(parameter) playerName: 接続が復帰したプレイヤーの名前
+*/
+export interface PlayerReconnectedMessage {
+  playerName: string;
+}
+
+export const PlayerReconnectedMessageDecoder: Decoder<PlayerReconnectedMessage> =
+  object({
+    playerName: string(),
+  });
+
+export function encodePlayerReconnectedMessage(
+  playerName: string
+): PlayerLostMessage {
+  return {
+    playerName,
+  };
+}
+
+/*
+待機する理由
+*/
+export const WaitReason = {
+  RECONNECTION: 0, // 再接続
+  ACTION: 1, // 追加のアクション
+} as const;
+export type WaitReason = typeof WaitReason[keyof typeof WaitReason];
+export const WaitReasonDecoder = oneOf(
+  constant(WaitReason.RECONNECTION),
+  constant(WaitReason.ACTION)
+);
+
+/*
+PlayerWaitingMessage: プレイヤー待ちメッセージ
+特定のプレイヤーの再接続、または何らかのアクションを待機していることを通知するメッセージ。再接続待ちでも使うつもりなのと、将来入れるかもしれない追加のアクション（7渡しなど）の待機でも使うつもりがある。
+(parameter) playerName: 待機するプレイヤーの名前
+(parameter) reason: 待機する理由
+*/
+export interface PlayerWaitMessage {
+  playerName: string;
+  reason: WaitReason;
+}
+
+export const PlayerWaitMessageDecoder: Decoder<PlayerWaitMessage> = object({
+  playerName: string(),
+  reason: WaitReasonDecoder,
+});
+
+export function encodePlayerWaitMessage(
+  playerName: string,
+  reason: WaitReason
+): PlayerWaitMessage {
+  return {
+    playerName,
+    reason,
+  };
+}
+
+/*
 ルームの現在の状態を表す。
 */
 export const RoomState = {
@@ -787,7 +867,7 @@ export interface GameRoomMetadata {
   owner: string;
   roomState: RoomState;
   ruleConfig: RuleConfig;
-  playerNameList: string[],
+  playerNameList: string[];
 }
 
 export const GameRoomMetadataDecoder: Decoder<GameRoomMetadata> = object({
@@ -801,7 +881,7 @@ export function encodeGameRoomMetadata(
   owner: string,
   roomState: RoomState,
   ruleConfig: RuleConfig,
-  playerNameList:string[]
+  playerNameList: string[]
 ): GameRoomMetadata {
   return {
     owner,
