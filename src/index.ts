@@ -927,3 +927,8 @@ export class AuthError extends Error {
     this.code = code;
   }
 }
+
+/* Other constants */
+
+// プレイヤーの再接続を許可する時間(分単位)
+export const maxReconnectionMinute = 5;

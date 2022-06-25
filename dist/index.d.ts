@@ -230,3 +230,4 @@ export declare class AuthError extends Error {
     code: WebSocketErrorCode;
     constructor(message: string, code: WebSocketErrorCode);
 }
+export declare const maxReconnectionMinute = 5;
