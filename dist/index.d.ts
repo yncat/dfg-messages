@@ -194,7 +194,12 @@ export interface PlayerReconnectedMessage {
     playerName: string;
 }
 export declare const PlayerReconnectedMessageDecoder: Decoder<PlayerReconnectedMessage>;
-export declare function encodePlayerReconnectedMessage(playerName: string): PlayerLostMessage;
+export declare function encodePlayerReconnectedMessage(playerName: string): PlayerReconnectedMessage;
+export interface PreventCloseMessage {
+    preventClose: boolean;
+}
+export declare const PreventCloseMessageDecoder: Decoder<PreventCloseMessage>;
+export declare function encodePreventCloseMessage(preventClose: boolean): PreventCloseMessage;
 export declare const WaitReason: {
     readonly RECONNECTION: 0;
     readonly ACTION: 1;

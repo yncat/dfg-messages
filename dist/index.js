@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.encodePlayerKickedMessage = exports.PlayerKickedMessageDecoder = exports.encodePassMessage = exports.PassMessageDecoder = exports.encodeDiscardMessage = exports.DiscardMessageDecoder = exports.encodeTurnSkippedMessage = exports.TurnSkippedMessageDecoder = exports.encodeStrengthInversionMessage = exports.StrengthInversionMessageDecoder = exports.encodeForbiddenAgariMessage = exports.ForbiddenAgariMessageDecoder = exports.encodeAgariMessage = exports.AgariMessageDecoder = exports.encodeDiscardPairListMessage = exports.DiscardPairListMessageDecoder = exports.encodeDiscardPairMessage = exports.DiscardPairMessageDecoder = exports.encodeCardMessage = exports.CardMessageDecoder = exports.encodeDiscardRequest = exports.DiscardRequestDecoder = exports.encodeCardSelectRequest = exports.CardSelectRequestDecoder = exports.encodeYourTurnMessage = exports.YourTurnMessageDecoder = exports.encodeTurnMessage = exports.TurnMessageDecoder = exports.encodeCardListMessage = exports.CardListMessageDecoder = exports.encodeSelectableCardMessage = exports.SelectableCardMessageDecoder = exports.encodePlayerLeftMessage = exports.PlayerLeftMessageDecoder = exports.encodePlayerJoinedMessage = exports.PlayerJoinedMessageDecoder = exports.encodeChatMessage = exports.ChatMessageDecoder = exports.encodeChatRequest = exports.ChatRequestDecoder = exports.isValidGameRoomParticipationOptions = exports.isValidGameRoomCreationOptions = exports.isValidRuleConfig = exports.RuleConfigDecoder = exports.SkipConfigDecoder = exports.SkipConfig = exports.RankTypeDecoder = exports.RankType = exports.CardMarkDecoder = exports.CardMark = void 0;
-exports.maxReconnectionMinute = exports.AuthError = exports.WebSocketErrorCode = exports.decodePayload = exports.PayloadDecodeError = exports.encodeGameRoomMetadata = exports.GameRoomMetadataDecoder = exports.RoomStateDecoder = exports.RoomState = exports.encodePlayerWaitMessage = exports.PlayerWaitMessageDecoder = exports.WaitReasonDecoder = exports.WaitReason = exports.encodePlayerReconnectedMessage = exports.PlayerReconnectedMessageDecoder = exports.encodePlayerLostMessage = exports.PlayerLostMessageDecoder = exports.encodeRoomCreatedMessage = exports.RoomCreatedMessageDecoder = exports.encodeGameEndMessage = exports.GameEndMessageDecoder = exports.encodeCardsProvidedMessage = exports.CardsProvidedMessageDecoder = exports.encodeInitialInfoMessage = exports.InitialInfoMessageDecoder = exports.encodePlayerRankChangedMessage = exports.PlayerRankChangedMessageDecoder = void 0;
+exports.maxReconnectionMinute = exports.AuthError = exports.WebSocketErrorCode = exports.decodePayload = exports.PayloadDecodeError = exports.encodeGameRoomMetadata = exports.GameRoomMetadataDecoder = exports.RoomStateDecoder = exports.RoomState = exports.encodePlayerWaitMessage = exports.PlayerWaitMessageDecoder = exports.WaitReasonDecoder = exports.WaitReason = exports.encodePreventCloseMessage = exports.PreventCloseMessageDecoder = exports.encodePlayerReconnectedMessage = exports.PlayerReconnectedMessageDecoder = exports.encodePlayerLostMessage = exports.PlayerLostMessageDecoder = exports.encodeRoomCreatedMessage = exports.RoomCreatedMessageDecoder = exports.encodeGameEndMessage = exports.GameEndMessageDecoder = exports.encodeCardsProvidedMessage = exports.CardsProvidedMessageDecoder = exports.encodeInitialInfoMessage = exports.InitialInfoMessageDecoder = exports.encodePlayerRankChangedMessage = exports.PlayerRankChangedMessageDecoder = void 0;
 const json_type_validation_1 = require("@mojotech/json-type-validation");
 /*
 dfg enum definitions
@@ -366,6 +366,15 @@ function encodePlayerReconnectedMessage(playerName) {
     };
 }
 exports.encodePlayerReconnectedMessage = encodePlayerReconnectedMessage;
+exports.PreventCloseMessageDecoder = json_type_validation_1.object({
+    preventClose: json_type_validation_1.boolean(),
+});
+function encodePreventCloseMessage(preventClose) {
+    return {
+        preventClose,
+    };
+}
+exports.encodePreventCloseMessage = encodePreventCloseMessage;
 /*
 待機する理由
 */

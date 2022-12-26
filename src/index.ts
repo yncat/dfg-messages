@@ -816,9 +816,31 @@ export const PlayerReconnectedMessageDecoder: Decoder<PlayerReconnectedMessage> 
 
 export function encodePlayerReconnectedMessage(
   playerName: string
-): PlayerLostMessage {
+): PlayerReconnectedMessage {
   return {
     playerName,
+  };
+}
+
+/*
+PreventCloseMessage: 切断時警告の有効/無効メッセージ
+ゲーム中に謝ってブラウザを閉じようとしたとき、クライアントサイドで警告を出したりしてもよい。
+PreventClose === true が通知されてから、 preventClose === false が通知されてくるまでの間は、終了時に警告を出した方がよいことを意味する。
+(parameter) preventClose: 終了操作に対して警告した方がよい状態かどうか
+*/
+export interface PreventCloseMessage {
+  preventClose: boolean;
+}
+
+export const PreventCloseMessageDecoder: Decoder<PreventCloseMessage> = object({
+  preventClose: boolean(),
+});
+
+export function encodePreventCloseMessage(
+  preventClose: boolean
+): PreventCloseMessage {
+  return {
+    preventClose,
   };
 }
 
