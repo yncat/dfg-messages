@@ -168,14 +168,13 @@ Request がサーバーからクライアントに送られたり、 Message が
 以下のメッセージは、パラメータを持たないので、コードとしては定義していない。
 - RoomOwnerMessage: ルームオーナーの権限をクライアントに与えるとき、そのクライアントに対して送信する。クライアントは、このメッセージを受信したら、ゲーム開始ボタンを表示する。
 - GameStartRequest: ルームオーナーのクライアントが、ゲーム開始を要求するときに送信する。
-- YourTurnMessage: ゲーム中、ターンが回ってきたクライアントに対して送信する。クライアントは、このメッセージを受信したら、音を出したり、「自分のターンです」というようなガイダンスを出したりする。
 - PassRequest: パスをするときにクライアントから送信するリクエスト。
-- NagareMessage: 場のカードが流れたときに全員に送信する。
-- YagiriMessage: 8切りが発生したときに全員に送信する。
-- JBackMessage: 11バックが発生したときに全員に送信する。強さの変化は、別のメッセージで通知される。
-- ReverseMessage: 9リバースが発生したときに全員に送信する。
-- KakumeiMessage: 革命が発生したときに全員に送信する。強さの変化は、別のメッセージで通知される。
-- GameEndMessage: ゲームが終了したときに全員に送信する。順位は、別のメッセージで通知される。
+- NagareMessage: 場のカードが流れたときにイベントログに積まれる。
+- YagiriMessage: 8切りが発生したときにイベントログに積まれる。
+- JBackMessage: 11バックが発生したときにイベントログに積まれる。強さの変化は、別のメッセージで通知される。
+- ReverseMessage: 9リバースが発生したときにイベントログに積まれる。
+- KakumeiMessage: 革命が発生したときにイベントログに積まれる。強さの変化は、別のメッセージで通知される。
+- GameEndMessage: ゲームが終了したときにイベントログに積まれる。順位は、別のメッセージで通知される。
 - RoomCreatedRequest: ルームを作成したクライアントが、ロビーに対して送信する。これを受け取ったら、サーバーは、ロビーの全員に RoomCreatedMessage を返すので、ルームができたことをクライアント全員が把握できるという仕組みになっている。ルームを作成したプレイヤー名は、 session id から引っ張ってくるので、明示的に渡す必要はない。
 /*
 
@@ -343,6 +342,26 @@ export const TurnMessageDecoder: Decoder<TurnMessage> = object({
 export function encodeTurnMessage(playerName: string): TurnMessage {
   return {
     playerName,
+  };
+}
+
+/*
+YourTurnMessage: 「自分のターン」状態変更通知
+yourTurn==trueで受け取った時、受け取ったプレイヤーのターンが始まったことを表す。
+yourTurn==falseで受け取った時、受け取ったプレイヤーのターンが終わったことを表す。
+(parameter) yourTurn: プレイヤーのターンが始まったか終わったか
+*/
+export interface YourTurnMessage {
+  yourTurn: boolean;
+}
+
+export const YourTurnMessageDecoder: Decoder<YourTurnMessage> = object({
+  yourTurn: boolean(),
+});
+
+export function encodeYourTurnMessage(yourTurn: boolean): YourTurnMessage {
+  return {
+    yourTurn,
   };
 }
 
