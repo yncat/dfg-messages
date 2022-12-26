@@ -83,6 +83,11 @@ export interface TurnMessage {
 }
 export declare const TurnMessageDecoder: Decoder<TurnMessage>;
 export declare function encodeTurnMessage(playerName: string): TurnMessage;
+export interface YourTurnMessage {
+    yourTurn: boolean;
+}
+export declare const YourTurnMessageDecoder: Decoder<YourTurnMessage>;
+export declare function encodeYourTurnMessage(yourTurn: boolean): YourTurnMessage;
 export interface CardSelectRequest {
     index: number;
 }
