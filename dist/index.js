@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.encodePlayerKickedMessage = exports.PlayerKickedMessageDecoder = exports.encodePassMessage = exports.PassMessageDecoder = exports.encodeDiscardMessage = exports.DiscardMessageDecoder = exports.encodeTurnSkippedMessage = exports.TurnSkippedMessageDecoder = exports.encodeStrengthInversionMessage = exports.StrengthInversionMessageDecoder = exports.encodeForbiddenAgariMessage = exports.ForbiddenAgariMessageDecoder = exports.encodeAgariMessage = exports.AgariMessageDecoder = exports.encodeDiscardPairListMessage = exports.DiscardPairListMessageDecoder = exports.encodeDiscardPairMessage = exports.DiscardPairMessageDecoder = exports.encodeCardMessage = exports.CardMessageDecoder = exports.encodeDiscardRequest = exports.DiscardRequestDecoder = exports.encodeCardSelectRequest = exports.CardSelectRequestDecoder = exports.encodeYourTurnMessage = exports.YourTurnMessageDecoder = exports.encodeTurnMessage = exports.TurnMessageDecoder = exports.encodeCardListMessage = exports.CardListMessageDecoder = exports.encodeSelectableCardMessage = exports.SelectableCardMessageDecoder = exports.encodePlayerLeftMessage = exports.PlayerLeftMessageDecoder = exports.encodePlayerJoinedMessage = exports.PlayerJoinedMessageDecoder = exports.encodeChatMessage = exports.ChatMessageDecoder = exports.encodeChatRequest = exports.ChatRequestDecoder = exports.isValidGameRoomParticipationOptions = exports.isValidGameRoomCreationOptions = exports.isValidRuleConfig = exports.RuleConfigDecoder = exports.SkipConfigDecoder = exports.SkipConfig = exports.RankTypeDecoder = exports.RankType = exports.CardMarkDecoder = exports.CardMark = void 0;
-exports.maxReconnectionMinute = exports.AuthError = exports.WebSocketErrorCode = exports.decodePayload = exports.PayloadDecodeError = exports.encodeGameRoomMetadata = exports.GameRoomMetadataDecoder = exports.RoomStateDecoder = exports.RoomState = exports.encodePlayerWaitMessage = exports.PlayerWaitMessageDecoder = exports.WaitReasonDecoder = exports.WaitReason = exports.encodePreventCloseMessage = exports.PreventCloseMessageDecoder = exports.encodePlayerReconnectedMessage = exports.PlayerReconnectedMessageDecoder = exports.encodePlayerLostMessage = exports.PlayerLostMessageDecoder = exports.encodeRoomCreatedMessage = exports.RoomCreatedMessageDecoder = exports.encodeGameEndMessage = exports.GameEndMessageDecoder = exports.encodeCardsProvidedMessage = exports.CardsProvidedMessageDecoder = exports.encodeInitialInfoMessage = exports.InitialInfoMessageDecoder = exports.encodePlayerRankChangedMessage = exports.PlayerRankChangedMessageDecoder = void 0;
+exports.encodeDiscardMessage = exports.DiscardMessageDecoder = exports.encodeExileMessage = exports.ExileMessageDecoder = exports.encodeTransferMessage = exports.TransferMessageDecoder = exports.encodeTurnSkippedMessage = exports.TurnSkippedMessageDecoder = exports.encodeStrengthInversionMessage = exports.StrengthInversionMessageDecoder = exports.encodeForbiddenAgariMessage = exports.ForbiddenAgariMessageDecoder = exports.encodeAgariMessage = exports.AgariMessageDecoder = exports.encodeDiscardPairListMessage = exports.DiscardPairListMessageDecoder = exports.encodeDiscardPairMessage = exports.DiscardPairMessageDecoder = exports.encodeCardMessage = exports.CardMessageDecoder = exports.encodeDiscardRequest = exports.DiscardRequestDecoder = exports.encodeCardSelectRequest = exports.CardSelectRequestDecoder = exports.encodeYourTurnMessage = exports.YourTurnMessageDecoder = exports.encodeTurnMessage = exports.TurnMessageDecoder = exports.encodeCardListMessage = exports.CardListMessageDecoder = exports.encodeSelectableCardMessage = exports.SelectableCardMessageDecoder = exports.encodePlayerLeftMessage = exports.PlayerLeftMessageDecoder = exports.encodePlayerJoinedMessage = exports.PlayerJoinedMessageDecoder = exports.encodeChatMessage = exports.ChatMessageDecoder = exports.encodeChatRequest = exports.ChatRequestDecoder = exports.isValidGameRoomParticipationOptions = exports.isValidGameRoomCreationOptions = exports.isValidRuleConfig = exports.RuleConfigDecoder = exports.SkipConfigDecoder = exports.SkipConfig = exports.RankTypeDecoder = exports.RankType = exports.CardMarkDecoder = exports.CardMark = void 0;
+exports.maxReconnectionMinute = exports.AuthError = exports.WebSocketErrorCode = exports.decodePayload = exports.PayloadDecodeError = exports.encodeGameRoomMetadata = exports.GameRoomMetadataDecoder = exports.RoomStateDecoder = exports.RoomState = exports.encodePlayerWaitMessage = exports.PlayerWaitMessageDecoder = exports.WaitReasonDecoder = exports.WaitReason = exports.encodePreventCloseMessage = exports.PreventCloseMessageDecoder = exports.encodePlayerReconnectedMessage = exports.PlayerReconnectedMessageDecoder = exports.encodePlayerLostMessage = exports.PlayerLostMessageDecoder = exports.encodeRoomCreatedMessage = exports.RoomCreatedMessageDecoder = exports.encodeGameEndMessage = exports.GameEndMessageDecoder = exports.encodeCardsProvidedMessage = exports.CardsProvidedMessageDecoder = exports.encodeInitialInfoMessage = exports.InitialInfoMessageDecoder = exports.encodePlayerRankChangedMessage = exports.PlayerRankChangedMessageDecoder = exports.encodePlayerKickedMessage = exports.PlayerKickedMessageDecoder = exports.encodePassMessage = exports.PassMessageDecoder = void 0;
 const json_type_validation_1 = require("@mojotech/json-type-validation");
 /*
 dfg enum definitions
@@ -43,6 +43,8 @@ exports.RuleConfigDecoder = json_type_validation_1.object({
     kakumei: json_type_validation_1.boolean(),
     reverse: json_type_validation_1.boolean(),
     skip: exports.SkipConfigDecoder,
+    transfer: json_type_validation_1.boolean(),
+    exile: json_type_validation_1.boolean(),
 });
 function isValidRuleConfig(obj) {
     if (typeof obj !== "object") {
@@ -68,6 +70,14 @@ function isValidRuleConfig(obj) {
     if (![exports.SkipConfig.OFF, exports.SkipConfig.SINGLE, exports.SkipConfig.MULTI].includes(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     castedObj.skip)) {
+        return false;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    if (typeof castedObj.transfer !== "boolean") {
+        return false;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    if (typeof castedObj.exile !== "boolean") {
         return false;
     }
     return true;
@@ -254,6 +264,30 @@ function encodeTurnSkippedMessage(playerName) {
     };
 }
 exports.encodeTurnSkippedMessage = encodeTurnSkippedMessage;
+exports.TransferMessageDecoder = json_type_validation_1.object({
+    fromPlayerName: json_type_validation_1.string(),
+    toPlayerName: json_type_validation_1.string(),
+    cardList: json_type_validation_1.array(exports.CardMessageDecoder),
+});
+function encodeTransferMessage(fromPlayerName, toPlayerName, cardList) {
+    return {
+        fromPlayerName,
+        toPlayerName,
+        cardList,
+    };
+}
+exports.encodeTransferMessage = encodeTransferMessage;
+exports.ExileMessageDecoder = json_type_validation_1.object({
+    playerName: json_type_validation_1.string(),
+    cardList: json_type_validation_1.array(exports.CardMessageDecoder),
+});
+function encodeExileMessage(playerName, cardList) {
+    return {
+        playerName,
+        cardList,
+    };
+}
+exports.encodeExileMessage = encodeExileMessage;
 exports.DiscardMessageDecoder = json_type_validation_1.object({
     playerName: json_type_validation_1.string(),
     discardPair: exports.DiscardPairMessageDecoder,
@@ -380,9 +414,10 @@ exports.encodePreventCloseMessage = encodePreventCloseMessage;
 */
 exports.WaitReason = {
     RECONNECTION: 0,
-    ACTION: 1, // 追加のアクション
+    TRANSFER: 1,
+    EXILE: 2, // 10捨て
 };
-exports.WaitReasonDecoder = json_type_validation_1.oneOf(json_type_validation_1.constant(exports.WaitReason.RECONNECTION), json_type_validation_1.constant(exports.WaitReason.ACTION));
+exports.WaitReasonDecoder = json_type_validation_1.oneOf(json_type_validation_1.constant(exports.WaitReason.RECONNECTION), json_type_validation_1.constant(exports.WaitReason.TRANSFER), json_type_validation_1.constant(exports.WaitReason.EXILE));
 exports.PlayerWaitMessageDecoder = json_type_validation_1.object({
     playerName: json_type_validation_1.string(),
     reason: exports.WaitReasonDecoder,

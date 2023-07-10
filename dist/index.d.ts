@@ -32,6 +32,8 @@ export declare type RuleConfig = {
     kakumei: boolean;
     reverse: boolean;
     skip: SkipConfig;
+    transfer: boolean;
+    exile: boolean;
 };
 export declare const RuleConfigDecoder: Decoder<RuleConfig>;
 export declare function isValidRuleConfig(obj: unknown): obj is RuleConfig;
@@ -134,6 +136,19 @@ export interface TurnSkippedMessage {
 }
 export declare const TurnSkippedMessageDecoder: Decoder<TurnSkippedMessage>;
 export declare function encodeTurnSkippedMessage(playerName: string): TurnSkippedMessage;
+export interface TransferMessage {
+    fromPlayerName: string;
+    toPlayerName: string;
+    cardList: CardMessage[];
+}
+export declare const TransferMessageDecoder: Decoder<TransferMessage>;
+export declare function encodeTransferMessage(fromPlayerName: string, toPlayerName: string, cardList: CardMessage[]): TransferMessage;
+export interface ExileMessage {
+    playerName: string;
+    cardList: CardMessage[];
+}
+export declare const ExileMessageDecoder: Decoder<ExileMessage>;
+export declare function encodeExileMessage(playerName: string, cardList: CardMessage[]): ExileMessage;
 export interface DiscardMessage {
     playerName: string;
     discardPair: DiscardPairMessage;
@@ -202,10 +217,11 @@ export declare const PreventCloseMessageDecoder: Decoder<PreventCloseMessage>;
 export declare function encodePreventCloseMessage(preventClose: boolean): PreventCloseMessage;
 export declare const WaitReason: {
     readonly RECONNECTION: 0;
-    readonly ACTION: 1;
+    readonly TRANSFER: 1;
+    readonly EXILE: 2;
 };
 export declare type WaitReason = typeof WaitReason[keyof typeof WaitReason];
-export declare const WaitReasonDecoder: Decoder<0 | 1>;
+export declare const WaitReasonDecoder: Decoder<0 | 1 | 2>;
 export interface PlayerWaitMessage {
     playerName: string;
     reason: WaitReason;

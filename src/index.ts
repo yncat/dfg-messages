@@ -77,6 +77,8 @@ export const SkipConfigDecoder = oneOf(
 (parameter) kakumei: 革命/革命返しが有効かどうか
 (parameter) reverse: 9リバースが有効かどうか
 (parameter) skip: 5スキップの取り扱いをどうするか
+(parameter) transfer: 7渡しが有効かどうか
+(parameter) exile: 10捨てが有効かどうか
 */
 export type RuleConfig = {
   yagiri: boolean;
@@ -84,6 +86,8 @@ export type RuleConfig = {
   kakumei: boolean;
   reverse: boolean;
   skip: SkipConfig;
+  transfer: boolean;
+  exile: boolean;
 };
 
 export const RuleConfigDecoder: Decoder<RuleConfig> = object({
@@ -92,6 +96,8 @@ export const RuleConfigDecoder: Decoder<RuleConfig> = object({
   kakumei: boolean(),
   reverse: boolean(),
   skip: SkipConfigDecoder,
+  transfer: boolean(),
+  exile: boolean(),
 });
 
 export function isValidRuleConfig(obj: unknown): obj is RuleConfig {
@@ -121,6 +127,14 @@ export function isValidRuleConfig(obj: unknown): obj is RuleConfig {
       castedObj.skip
     )
   ) {
+    return false;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  if (typeof castedObj.transfer !== "boolean") {
+    return false;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  if (typeof castedObj.exile !== "boolean") {
     return false;
   }
   return true;
@@ -557,6 +571,62 @@ export function encodeTurnSkippedMessage(
 }
 
 /*
+TransferMessage: カード移動メッセージ
+7渡しでカードが移動したときのメッセージ。
+(parameter) fromPlayerName: カードを渡したプレイヤーの名前
+(parameter) toPlayerName: カードを受け取ったプレイヤーの名前
+(parameter) cardList: 渡されたカード。 CardMessage の配列。
+*/
+export interface TransferMessage {
+  fromPlayerName: string;
+  toPlayerName: string;
+  cardList: CardMessage[];
+}
+
+export const TransferMessageDecoder: Decoder<TransferMessage> = object({
+  fromPlayerName: string(),
+  toPlayerName: string(),
+  cardList: array(CardMessageDecoder),
+});
+
+export function encodeTransferMessage(
+  fromPlayerName: string,
+  toPlayerName: string,
+  cardList: CardMessage[]
+): TransferMessage {
+  return {
+    fromPlayerName,
+    toPlayerName,
+    cardList,
+  };
+}
+
+/*
+ExileMessage: 10捨てでカードが捨てられたときのメッセージ
+(parameter) playerName: カードを捨てたプレイヤーの名前
+(parameter) cardList: 捨てられたカード。 CardMessage の配列。
+*/
+export interface ExileMessage {
+  playerName: string;
+  cardList: CardMessage[];
+}
+
+export const ExileMessageDecoder: Decoder<ExileMessage> = object({
+  playerName: string(),
+  cardList: array(CardMessageDecoder),
+});
+
+export function encodeExileMessage(
+  playerName: string,
+  cardList: CardMessage[]
+): ExileMessage {
+  return {
+    playerName,
+    cardList,
+  };
+}
+
+/*
 DiscardMessage: カードプレイメッセージ。
 カードをプレイして場に出したときのメッセージ。
 (parameter) playerName: カードをプレイしたプレイヤーの名前。
@@ -849,12 +919,14 @@ export function encodePreventCloseMessage(
 */
 export const WaitReason = {
   RECONNECTION: 0, // 再接続
-  ACTION: 1, // 追加のアクション
+  TRANSFER: 1, // 7渡し
+  EXILE: 2, // 10捨て
 } as const;
 export type WaitReason = typeof WaitReason[keyof typeof WaitReason];
 export const WaitReasonDecoder = oneOf(
   constant(WaitReason.RECONNECTION),
-  constant(WaitReason.ACTION)
+  constant(WaitReason.TRANSFER),
+  constant(WaitReason.EXILE)
 );
 
 /*
