@@ -176,20 +176,18 @@ exports.encodeTurnMessage = encodeTurnMessage;
 自分のターンのコンテキスト
 */
 exports.YourTurnContext = {
-    UNDEFINED: 0,
-    TURN: 1,
+    INACTIVE: 0,
+    ACTIVE: 1,
     TRANSFER: 2,
-    EXILE: 3, // 10捨てのカードを選択
+    EXILE: 3, // 10捨てのカード選択になった
 };
-exports.YourTurnContextDecoder = json_type_validation_1.oneOf(json_type_validation_1.constant(exports.YourTurnContext.UNDEFINED), json_type_validation_1.constant(exports.YourTurnContext.TURN), json_type_validation_1.constant(exports.YourTurnContext.TRANSFER), json_type_validation_1.constant(exports.YourTurnContext.EXILE));
+exports.YourTurnContextDecoder = json_type_validation_1.oneOf(json_type_validation_1.constant(exports.YourTurnContext.INACTIVE), json_type_validation_1.constant(exports.YourTurnContext.ACTIVE), json_type_validation_1.constant(exports.YourTurnContext.TRANSFER), json_type_validation_1.constant(exports.YourTurnContext.EXILE));
 exports.YourTurnMessageDecoder = json_type_validation_1.object({
-    yourTurn: json_type_validation_1.boolean(),
     context: exports.YourTurnContextDecoder,
     passable: json_type_validation_1.boolean(),
 });
-function encodeYourTurnMessage(yourTurn, context, passable) {
+function encodeYourTurnMessage(context, passable) {
     return {
-        yourTurn,
         context,
         passable,
     };

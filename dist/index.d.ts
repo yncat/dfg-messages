@@ -86,20 +86,19 @@ export interface TurnMessage {
 export declare const TurnMessageDecoder: Decoder<TurnMessage>;
 export declare function encodeTurnMessage(playerName: string): TurnMessage;
 export declare const YourTurnContext: {
-    readonly UNDEFINED: 0;
-    readonly TURN: 1;
+    readonly INACTIVE: 0;
+    readonly ACTIVE: 1;
     readonly TRANSFER: 2;
     readonly EXILE: 3;
 };
 export declare type YourTurnContext = typeof YourTurnContext[keyof typeof YourTurnContext];
 export declare const YourTurnContextDecoder: Decoder<0 | 1 | 2 | 3>;
 export interface YourTurnMessage {
-    yourTurn: boolean;
     context: YourTurnContext;
     passable: boolean;
 }
 export declare const YourTurnMessageDecoder: Decoder<YourTurnMessage>;
-export declare function encodeYourTurnMessage(yourTurn: boolean, context: YourTurnContext, passable: boolean): YourTurnMessage;
+export declare function encodeYourTurnMessage(context: YourTurnContext, passable: boolean): YourTurnMessage;
 export interface CardSelectRequest {
     index: number;
 }
