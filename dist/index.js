@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.encodeDiscardMessage = exports.DiscardMessageDecoder = exports.encodeExileMessage = exports.ExileMessageDecoder = exports.encodeTransferMessage = exports.TransferMessageDecoder = exports.encodeTurnSkippedMessage = exports.TurnSkippedMessageDecoder = exports.encodeStrengthInversionMessage = exports.StrengthInversionMessageDecoder = exports.encodeForbiddenAgariMessage = exports.ForbiddenAgariMessageDecoder = exports.encodeAgariMessage = exports.AgariMessageDecoder = exports.encodeDiscardPairListMessage = exports.DiscardPairListMessageDecoder = exports.encodeDiscardPairMessage = exports.DiscardPairMessageDecoder = exports.encodeCardMessage = exports.CardMessageDecoder = exports.encodeDiscardRequest = exports.DiscardRequestDecoder = exports.encodeCardSelectRequest = exports.CardSelectRequestDecoder = exports.encodeYourTurnMessage = exports.YourTurnMessageDecoder = exports.encodeTurnMessage = exports.TurnMessageDecoder = exports.encodeCardListMessage = exports.CardListMessageDecoder = exports.encodeSelectableCardMessage = exports.SelectableCardMessageDecoder = exports.encodePlayerLeftMessage = exports.PlayerLeftMessageDecoder = exports.encodePlayerJoinedMessage = exports.PlayerJoinedMessageDecoder = exports.encodeChatMessage = exports.ChatMessageDecoder = exports.encodeChatRequest = exports.ChatRequestDecoder = exports.isValidGameRoomParticipationOptions = exports.isValidGameRoomCreationOptions = exports.isValidRuleConfig = exports.RuleConfigDecoder = exports.SkipConfigDecoder = exports.SkipConfig = exports.RankTypeDecoder = exports.RankType = exports.CardMarkDecoder = exports.CardMark = void 0;
-exports.maxReconnectionMinute = exports.AuthError = exports.WebSocketErrorCode = exports.decodePayload = exports.PayloadDecodeError = exports.encodeGameRoomMetadata = exports.GameRoomMetadataDecoder = exports.RoomStateDecoder = exports.RoomState = exports.encodePlayerWaitMessage = exports.PlayerWaitMessageDecoder = exports.WaitReasonDecoder = exports.WaitReason = exports.encodePreventCloseMessage = exports.PreventCloseMessageDecoder = exports.encodePlayerReconnectedMessage = exports.PlayerReconnectedMessageDecoder = exports.encodePlayerLostMessage = exports.PlayerLostMessageDecoder = exports.encodeRoomCreatedMessage = exports.RoomCreatedMessageDecoder = exports.encodeGameEndMessage = exports.GameEndMessageDecoder = exports.encodeCardsProvidedMessage = exports.CardsProvidedMessageDecoder = exports.encodeInitialInfoMessage = exports.InitialInfoMessageDecoder = exports.encodePlayerRankChangedMessage = exports.PlayerRankChangedMessageDecoder = exports.encodePlayerKickedMessage = exports.PlayerKickedMessageDecoder = exports.encodePassMessage = exports.PassMessageDecoder = void 0;
+exports.encodeExileMessage = exports.ExileMessageDecoder = exports.encodeTransferMessage = exports.TransferMessageDecoder = exports.encodeTurnSkippedMessage = exports.TurnSkippedMessageDecoder = exports.encodeStrengthInversionMessage = exports.StrengthInversionMessageDecoder = exports.encodeForbiddenAgariMessage = exports.ForbiddenAgariMessageDecoder = exports.encodeAgariMessage = exports.AgariMessageDecoder = exports.encodeDiscardPairListMessage = exports.DiscardPairListMessageDecoder = exports.encodeDiscardPairMessage = exports.DiscardPairMessageDecoder = exports.encodeCardMessage = exports.CardMessageDecoder = exports.encodeDiscardRequest = exports.DiscardRequestDecoder = exports.encodeCardSelectRequest = exports.CardSelectRequestDecoder = exports.encodeYourTurnMessage = exports.YourTurnMessageDecoder = exports.YourTurnContextDecoder = exports.YourTurnContext = exports.encodeTurnMessage = exports.TurnMessageDecoder = exports.encodeCardListMessage = exports.CardListMessageDecoder = exports.encodeSelectableCardMessage = exports.SelectableCardMessageDecoder = exports.encodePlayerLeftMessage = exports.PlayerLeftMessageDecoder = exports.encodePlayerJoinedMessage = exports.PlayerJoinedMessageDecoder = exports.encodeChatMessage = exports.ChatMessageDecoder = exports.encodeChatRequest = exports.ChatRequestDecoder = exports.isValidGameRoomParticipationOptions = exports.isValidGameRoomCreationOptions = exports.isValidRuleConfig = exports.RuleConfigDecoder = exports.SkipConfigDecoder = exports.SkipConfig = exports.RankTypeDecoder = exports.RankType = exports.CardMarkDecoder = exports.CardMark = void 0;
+exports.maxReconnectionMinute = exports.AuthError = exports.WebSocketErrorCode = exports.decodePayload = exports.PayloadDecodeError = exports.encodeGameRoomMetadata = exports.GameRoomMetadataDecoder = exports.RoomStateDecoder = exports.RoomState = exports.encodePlayerWaitMessage = exports.PlayerWaitMessageDecoder = exports.WaitReasonDecoder = exports.WaitReason = exports.encodePreventCloseMessage = exports.PreventCloseMessageDecoder = exports.encodePlayerReconnectedMessage = exports.PlayerReconnectedMessageDecoder = exports.encodePlayerLostMessage = exports.PlayerLostMessageDecoder = exports.encodeRoomCreatedMessage = exports.RoomCreatedMessageDecoder = exports.encodeGameEndMessage = exports.GameEndMessageDecoder = exports.encodeCardsProvidedMessage = exports.CardsProvidedMessageDecoder = exports.encodeInitialInfoMessage = exports.InitialInfoMessageDecoder = exports.encodePlayerRankChangedMessage = exports.PlayerRankChangedMessageDecoder = exports.encodePlayerKickedMessage = exports.PlayerKickedMessageDecoder = exports.encodePassMessage = exports.PassMessageDecoder = exports.encodeDiscardMessage = exports.DiscardMessageDecoder = void 0;
 const json_type_validation_1 = require("@mojotech/json-type-validation");
 /*
 dfg enum definitions
@@ -172,12 +172,26 @@ function encodeTurnMessage(playerName) {
     };
 }
 exports.encodeTurnMessage = encodeTurnMessage;
+/*
+自分のターンのコンテキスト
+*/
+exports.YourTurnContext = {
+    UNDEFINED: 0,
+    TURN: 1,
+    TRANSFER: 2,
+    EXILE: 3, // 10捨てのカードを選択
+};
+exports.YourTurnContextDecoder = json_type_validation_1.oneOf(json_type_validation_1.constant(exports.YourTurnContext.UNDEFINED), json_type_validation_1.constant(exports.YourTurnContext.TURN), json_type_validation_1.constant(exports.YourTurnContext.TRANSFER), json_type_validation_1.constant(exports.YourTurnContext.EXILE));
 exports.YourTurnMessageDecoder = json_type_validation_1.object({
     yourTurn: json_type_validation_1.boolean(),
+    context: exports.YourTurnContextDecoder,
+    passable: json_type_validation_1.boolean(),
 });
-function encodeYourTurnMessage(yourTurn) {
+function encodeYourTurnMessage(yourTurn, context, passable) {
     return {
         yourTurn,
+        context,
+        passable,
     };
 }
 exports.encodeYourTurnMessage = encodeYourTurnMessage;

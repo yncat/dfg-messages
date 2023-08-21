@@ -360,22 +360,48 @@ export function encodeTurnMessage(playerName: string): TurnMessage {
 }
 
 /*
+自分のターンのコンテキスト
+*/
+export const YourTurnContext = {
+  UNDEFINED: 0, // 未定義(yourTurn == falseの場合)
+  TURN: 1, // 通常のターン
+  TRANSFER: 2, // 7渡しのカードを選択
+  EXILE: 3, // 10捨てのカードを選択
+} as const;
+export type YourTurnContext = typeof YourTurnContext[keyof typeof YourTurnContext];
+export const YourTurnContextDecoder = oneOf(
+  constant(YourTurnContext.UNDEFINED),
+  constant(YourTurnContext.TURN),
+  constant(YourTurnContext.TRANSFER),
+  constant(YourTurnContext.EXILE)
+);
+
+/*
 YourTurnMessage: 「自分のターン」状態変更通知
 yourTurn==trueで受け取った時、受け取ったプレイヤーのターンが始まったことを表す。
 yourTurn==falseで受け取った時、受け取ったプレイヤーのターンが終わったことを表す。
+その他のコンテキスト情報も一緒に含まれている。
 (parameter) yourTurn: プレイヤーのターンが始まったか終わったか
+(parameter) context: ターンコンテキスト情報 (自分のターンでないときは TurnContext.UNDEFINED )
+(parameter) passable: このターン中パスを可能にするか(自分のターンでないときは false )
 */
 export interface YourTurnMessage {
   yourTurn: boolean;
+  context: YourTurnContext;
+  passable: boolean;
 }
 
 export const YourTurnMessageDecoder: Decoder<YourTurnMessage> = object({
   yourTurn: boolean(),
+  context: YourTurnContextDecoder,
+  passable: boolean(),
 });
 
-export function encodeYourTurnMessage(yourTurn: boolean): YourTurnMessage {
+export function encodeYourTurnMessage(yourTurn: boolean, context: YourTurnContext, passable: boolean): YourTurnMessage {
   return {
     yourTurn,
+    context,
+    passable,
   };
 }
 
@@ -1004,7 +1030,7 @@ export function encodeGameRoomMetadata(
   };
 }
 
-export class PayloadDecodeError extends Error {}
+export class PayloadDecodeError extends Error { }
 export function decodePayload<T>(
   encoded: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
   decoder: Decoder<T>
